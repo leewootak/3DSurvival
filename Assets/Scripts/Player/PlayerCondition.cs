@@ -22,7 +22,7 @@ public class PlayerCondition : MonoBehaviour, IDamagable
 
     void Update()
     {
-        hunger. Subtract(hunger.passiveValue * Time.deltaTime);
+        hunger.Subtract(hunger.passiveValue * Time.deltaTime);
         stamina.Add(stamina.passiveValue * Time.deltaTime);
 
         if(hunger.curValue <= 0f)
@@ -43,7 +43,7 @@ public class PlayerCondition : MonoBehaviour, IDamagable
 
     public void Eat(float amount)
     {
-        health.Add(amount);
+        hunger.Add(amount);
     }
 
     public void Die()
@@ -55,5 +55,16 @@ public class PlayerCondition : MonoBehaviour, IDamagable
     {
         health.Subtract(damage);
         onTakeDamage?.Invoke();
+    }
+
+    public bool UseStamina(float amount)
+    {
+        if(stamina.curValue - amount < 0f)
+        {
+            return false;
+        }
+
+        stamina.Subtract(amount);
+        return true;
     }
 }
